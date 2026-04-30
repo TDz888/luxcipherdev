@@ -54,20 +54,49 @@ if (legacyPlayer) legacyPlayer.remove();
   if (!gate) return;
 
   const STORAGE_KEY = 'profile_identity_role';
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const safeStorage = {
+    get(key) {
+      try {
+        return window.localStorage.getItem(key);
+      } catch (_) {
+        return null;
+      }
+    },
+    set(key, value) {
+      try {
+        window.localStorage.setItem(key, value);
+      } catch (_) {
+        // Storage can fail in strict privacy modes; allow continue anyway.
+      }
+    }
+  };
+
+  const saved = safeStorage.get(STORAGE_KEY);
   if (saved) return;
 
   gate.hidden = false;
   document.body.style.overflow = 'hidden';
 
+  const finishGate = role => {
+    safeStorage.set(STORAGE_KEY, role || 'random');
+    gate.hidden = true;
+    document.body.style.overflow = '';
+  };
+
   gate.querySelectorAll('.identity-option').forEach(btn => {
     btn.addEventListener('click', () => {
       const role = btn.getAttribute('data-role') || 'random';
-      localStorage.setItem(STORAGE_KEY, role);
-      gate.hidden = true;
-      document.body.style.overflow = '';
+      finishGate(role);
     });
   });
+
+  // Extra fallback: click on card continue area or press Enter.
+  const card = gate.querySelector('.identity-card');
+  if (card) {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter') finishGate('random');
+    });
+  }
 })();
 
 // Cursor glow
