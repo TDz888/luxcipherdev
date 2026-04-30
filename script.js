@@ -48,62 +48,12 @@ document.addEventListener('visibilitychange', () => {
 const legacyPlayer = document.getElementById('tia-player');
 if (legacyPlayer) legacyPlayer.remove();
 
-// First visit identity gate
-(function identityGate() {
-  const gate = document.getElementById('identity-gate');
-  if (!gate) return;
-
-  const STORAGE_KEY = 'profile_identity_role';
-  const safeStorage = {
-    get(key) {
-      try {
-        return window.localStorage.getItem(key);
-      } catch (_) {
-        return null;
-      }
-    },
-    set(key, value) {
-      try {
-        window.localStorage.setItem(key, value);
-      } catch (_) {
-        // Storage can fail in strict privacy modes; allow continue anyway.
-      }
-    }
-  };
-
-  const saved = safeStorage.get(STORAGE_KEY);
-  if (saved) return;
-
-  gate.hidden = false;
-  document.body.style.overflow = 'hidden';
-
-  const finishGate = role => {
-    safeStorage.set(STORAGE_KEY, role || 'random');
-    gate.hidden = true;
-    document.body.style.overflow = '';
-  };
-
-  gate.querySelectorAll('.identity-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const role = btn.getAttribute('data-role') || 'random';
-      finishGate(role);
-    });
-  });
-
-  // Extra fallback: click on card continue area or press Enter.
-  const card = gate.querySelector('.identity-card');
-  if (card) {
-    card.addEventListener('keydown', e => {
-      if (e.key === 'Enter') finishGate('random');
-    });
-  }
-})();
-
 // Cursor glow
 (function cursorFX() {
   const cursorGlow = document.getElementById('cursor-glow');
   const cursorDot = document.getElementById('cursor-dot');
-  if (!cursorGlow || !cursorDot || prefersReducedMotion) return;
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  if (!cursorGlow || !cursorDot || prefersReducedMotion || coarsePointer) return;
 
   let mx = -999;
   let my = -999;
