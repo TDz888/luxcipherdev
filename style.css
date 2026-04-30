@@ -170,72 +170,6 @@ body {
   font-size: .68rem; color: var(--tm); letter-spacing: .08em;
 }
 
-/* ── IDENTITY GATE ── */
-.identity-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  display: grid;
-  place-items: center;
-  background: radial-gradient(circle at 30% 20%, rgba(244,132,95,.18), rgba(13,15,26,.94) 45%);
-  padding: 1.2rem;
-  pointer-events: auto;
-}
-.identity-card {
-  width: min(520px, 100%);
-  padding: 2rem;
-  text-align: center;
-  border-radius: 26px;
-  box-shadow: 0 26px 70px rgba(3,10,26,.6), 0 1px 0 rgba(255,255,255,.2) inset;
-}
-.identity-kicker {
-  font-size: .65rem;
-  color: var(--a2);
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  margin-bottom: .7rem;
-}
-.identity-card h2 {
-  font-family: var(--fh);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 600;
-  margin-bottom: .45rem;
-}
-.identity-sub {
-  font-size: .86rem;
-  color: var(--ts);
-  margin-bottom: 1.3rem;
-}
-.identity-options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: .75rem;
-}
-.identity-option {
-  border-radius: 12px;
-  border: 1px solid var(--bdr);
-  background: rgba(255,255,255,.05);
-  color: var(--tp);
-  padding: .9rem .7rem;
-  font-weight: 700;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  font-size: .7rem;
-  cursor: pointer;
-  transition: transform .2s, background .2s, border-color .2s;
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-}
-.identity-option:hover {
-  transform: translateY(-3px);
-  background: rgba(244,132,95,.16);
-  border-color: var(--a2);
-}
-.identity-option:active {
-  transform: translateY(-1px) scale(.99);
-}
-
 /* ── QUICK TOOLS ── */
 .quick-tools {
   position: fixed;
@@ -472,6 +406,8 @@ body {
 .section {
   position: relative; z-index: 1;
   padding: 9rem 2rem; max-width: 1200px; margin: 0 auto;
+  content-visibility: auto;
+  contain-intrinsic-size: 700px;
 }
 .section::before {
   content: '';
@@ -987,7 +923,6 @@ body {
 /* ── RESPONSIVE ── */
 @media(max-width:1024px) { .proj-grid{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:768px) {
-  .identity-options{grid-template-columns:1fr}
   .nav{padding:1rem 1.5rem}
   .nav.scrolled{padding:.75rem 1.5rem}
   .nav-links{gap:1.5rem}
